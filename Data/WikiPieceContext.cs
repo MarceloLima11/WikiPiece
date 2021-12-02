@@ -6,6 +6,9 @@ namespace WikiPiece.Data
 {
     public class WikiPieceContext : DbContext
     {
+        public DbSet<AkumaNoMi> AkumaNoMis { get; set; }
+        public DbSet<Personagem> Personagens { get; set; }
+
         private readonly IConfiguration _configuration;
 
         public WikiPieceContext(IConfiguration configuration)
@@ -13,12 +16,10 @@ namespace WikiPiece.Data
             _configuration = configuration;
         }
 
-        public DbSet<AkumaNoMi> AkumaNoMis;
-        public DbSet<Personagem> Personagens;
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var mySqlConnectionStr = _configuration.GetConnectionString("WikiConnection");
+            string mySqlConnectionStr = _configuration.GetConnectionString("WikiConnection");
+            
             optionsBuilder.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr));
         }
     }
