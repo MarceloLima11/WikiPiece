@@ -59,9 +59,7 @@ namespace WikiPiece.Controllers
         public IActionResult Put([FromRoute] int id, [FromBody] Personagem personagem)
         {
             if(id != personagem.Id)
-            {
-                return BadRequest("Ids diferentes.");
-            }
+            return BadRequest("Ids diferentes.");
 
             var personagemId = _context.Personagens.FirstOrDefault(x => x.Id == id);
             _context.Entry(personagemId).State = EntityState.Modified;

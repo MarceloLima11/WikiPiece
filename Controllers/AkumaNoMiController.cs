@@ -56,7 +56,7 @@ namespace WikiPiece.Controllers
         }
 
         [HttpPost]
-        public ActionResult<AkumaNoMi> Post([FromQuery] AkumaNoMi newAkumaNoMi)
+        public ActionResult<AkumaNoMi> Post([FromBody] AkumaNoMi newAkumaNoMi)
         {
             _context.AkumaNoMis.Add(newAkumaNoMi);
             _context.SaveChanges();
