@@ -13,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using WikiPiece.Data;
+using WikiPiece.Repository;
+using WikiPiece.Repository.Interfaces;
 
 namespace WikiPiece
 {
@@ -28,6 +30,9 @@ namespace WikiPiece
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IPersonagemRepository, PersonagemRepository>();
+            services.AddScoped<IAkumaNoMiRepository, AkumaNoMiRepository>();  
+
             var mySqlConnectionStr = Configuration.GetConnectionString("WikiConnection");
             services.AddDbContext<WikiPieceContext>(x =>{
                  x.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr));
