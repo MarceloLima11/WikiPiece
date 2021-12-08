@@ -16,9 +16,9 @@ namespace WikiPiece.Repository
             _context = context;
         }
 
-        public IEnumerable<Personagem> GetTop5(bool top5)
+        public IEnumerable<Personagem> GetTop5(Expression<Func<Personagem, bool>> predicate)
         {
-            return _context.Personagens.Where(x => x.Top5 == top5);
+            return _context.Personagens.Where(predicate);
         }
     }
 }

@@ -7,6 +7,6 @@ namespace WikiPiece.Repository.Interfaces
 {
     public interface IPersonagemRepository : IRepository<Personagem>
     {
-        IEnumerable<Personagem> GetTop5(bool top5);
+        IEnumerable<Personagem> GetTop5(Expression<Func<Personagem, bool>> predicate);
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using WikiPiece.Data;
 using WikiPiece.Models;
@@ -20,9 +22,9 @@ namespace WikiPiece.Repository
             return _context.AkumaNoMis.Include(x => x.Personagens);
         }
 
-        public IEnumerable<AkumaNoMi> GetByTipo(string tipo)
+        public IEnumerable<AkumaNoMi> GetByTipo(Expression<Func<AkumaNoMi, bool>> predicate)
         {
-            return _context.AkumaNoMis.Where(x => x.Tipo == tipo);
+            return _context.AkumaNoMis.Where(predicate);
         }
     }
 }

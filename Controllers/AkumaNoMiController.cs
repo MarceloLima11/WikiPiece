@@ -28,23 +28,23 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("Nome/{nome}")]
-        public ActionResult<AkumaNoMi> GetByNome(string nome)
+        public ActionResult<AkumaNoMi> GetByNome([FromRoute] string nome)
         {
             var akuma = _context.GetByNome(x => x.Nome == nome);
             return akuma;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<AkumaNoMi> GetById(int id)
+        public ActionResult<AkumaNoMi> GetById([FromRoute] int id)
         {
             var akuma = _context.GetById(x => x.Id == id);
             return akuma;
         }
 
         [HttpGet("Tipo/{tipo}")]
-        public ActionResult<IEnumerable<AkumaNoMi>> GetByTipo(string tipo)
+        public ActionResult<IEnumerable<AkumaNoMi>> GetByTipo([FromRoute] string tipo)
         {
-            var akumas = _context.GetByTipo(tipo).ToList();
+            var akumas = _context.GetByTipo(x => x.Tipo == tipo).ToList();
             return akumas;
         }
 
@@ -65,6 +65,9 @@ namespace WikiPiece.Controllers
         [HttpPut("{id}")]
         public IActionResult Put([FromRoute] int id, [FromBody] AkumaNoMi akumaNoMi)
         {
+            if(id != akumaNoMi.Id)
+            return BadRequest();
+            
             _context.Update(akumaNoMi);
             return NoContent();
         }
