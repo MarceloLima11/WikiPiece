@@ -8,6 +8,7 @@ namespace WikiPiece.Data
     {
         public DbSet<AkumaNoMi> AkumaNoMis { get; set; }
         public DbSet<Personagem> Personagens { get; set; }
+        public DbSet<Ilha> Ilhas { get; set; }
 
         private readonly IConfiguration _configuration;
 

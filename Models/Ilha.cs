@@ -25,4 +25,3 @@ namespace WikiPiece.Models
 
     }
 }
-//Nome, Estação, Descrição, Imagem, Collection Personagens
