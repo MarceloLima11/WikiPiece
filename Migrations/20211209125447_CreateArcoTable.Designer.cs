@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WikiPiece.Data;
 
 namespace WikiPiece.Migrations
 {
     [DbContext(typeof(WikiPieceContext))]
-    partial class WikiPieceContextModelSnapshot : ModelSnapshot
+    [Migration("20211209125447_CreateArcoTable")]
+    partial class CreateArcoTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,10 +72,6 @@ namespace WikiPiece.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("EpisodiosAnime")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("longtext");
 

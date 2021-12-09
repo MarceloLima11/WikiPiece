@@ -39,7 +39,6 @@ namespace WikiPiece
                  x.UseMySql(mySqlConnectionStr, ServerVersion.AutoDetect(mySqlConnectionStr));
             });
 
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
