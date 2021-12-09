@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WikiPiece.Data;
 using WikiPiece.Models;
+using WikiPiece.Repository.Interfaces;
 
 namespace WikiPiece.Controllers
 {
@@ -11,9 +12,9 @@ namespace WikiPiece.Controllers
     [Route("v1/[Controller]")]
     public class ArcoController : ControllerBase
     {
-        private readonly WikiPieceContext _context;
+        private readonly IArcoRepository _context;
 
-        public ArcoController(WikiPieceContext context)
+        public ArcoController(IArcoRepository context)
         {
             _context = context;
         }
@@ -21,14 +22,14 @@ namespace WikiPiece.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Arco>> GetAll()
         {
-            var listArcos = _context.Arcos.ToList();
+            var listArcos = _context.Get().ToList();
             return listArcos;
         }
         
         [HttpGet("{id}")]
         public ActionResult<Arco> GetById([FromRoute] int id)
         {
-            var arco = _context.Arcos.FirstOrDefault(x => x.Id == id);
+            var arco = _context.GetById(x => x.Id == id);
 
             return arco;
         }
@@ -36,7 +37,7 @@ namespace WikiPiece.Controllers
         [HttpGet("{nome}")]
         public ActionResult<Arco> GetByNome([FromRoute] string nome)
         {
-            var arco = _context.Arcos.FirstOrDefault(x => x.Nome == nome);
+            var arco = _context.GetByNome(x => x.Nome == nome);
             return arco;
         }
 
@@ -44,8 +45,6 @@ namespace WikiPiece.Controllers
         public ActionResult<Arco> Post([FromBody] Arco newArco)
         {
             _context.Add(newArco);
-            _context.SaveChanges();
-
             return newArco;
         }
         
@@ -55,8 +54,6 @@ namespace WikiPiece.Controllers
             if(id != newArco.Id)
             return BadRequest();
 
-            var oldArco = _context.Arcos.FirstOrDefault(x => x.Id == id);
-            _context.Entry(oldArco).State = EntityState.Modified;
             _context.Update(newArco);
 
             return NoContent();
