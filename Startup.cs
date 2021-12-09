@@ -30,6 +30,7 @@ namespace WikiPiece
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IArcoRepository, ArcoRepository>();
             services.AddScoped<IIlhaRepository, IlhaRepository>();
             services.AddScoped<IPersonagemRepository, PersonagemRepository>();
             services.AddScoped<IAkumaNoMiRepository, AkumaNoMiRepository>();  
