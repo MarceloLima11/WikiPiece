@@ -33,14 +33,14 @@ namespace WikiPiece.Controllers
             return ilha;
         }
 
-        [HttpGet("Regiao")]
+        [HttpGet("Regiao/{regiao}")]
         public ActionResult<IEnumerable<Ilha>> GetByRegiao(string regiao)
         {
             var ilhasRegiao =_context.GetByRegiao(x => x.Regiao == regiao).ToList();
             return ilhasRegiao;
         }
 
-        [HttpGet("Clima")]
+        [HttpGet("Clima/{clima}")]
         public ActionResult<IEnumerable<Ilha>> GetByClima(string clima)
         {
             var ilhasClima = _context.GetByClima(x => x.Clima == clima).ToList();

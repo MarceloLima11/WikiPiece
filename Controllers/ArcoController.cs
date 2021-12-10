@@ -26,7 +26,7 @@ namespace WikiPiece.Controllers
             return listArcos;
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("Id/{id}")]
         public ActionResult<Arco> GetById([FromRoute] int id)
         {
             var arco = _context.GetById(x => x.Id == id);
@@ -34,7 +34,7 @@ namespace WikiPiece.Controllers
             return arco;
         }
 
-        [HttpGet("{nome}")]
+        [HttpGet("Nome/{nome}")]
         public ActionResult<Arco> GetByNome([FromRoute] string nome)
         {
             var arco = _context.GetByNome(x => x.Nome == nome);

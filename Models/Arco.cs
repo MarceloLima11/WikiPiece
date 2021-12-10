@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +12,8 @@ namespace WikiPiece.Models
         [Required]
         public string Nome { get; set; }
         [Required]
+        public string ImagemUrl { get; set; }
+        [Required]
         public string Volumes { get; set; }
         [Required]
         public string CapitulosManga { get; set; }
@@ -20,5 +23,6 @@ namespace WikiPiece.Models
         public string AnoLancamento { get; set; }
         [Required]
         public string Descricao { get; set; }
+        public ICollection<Personagem> Personagens { get; set; }
     }
 }

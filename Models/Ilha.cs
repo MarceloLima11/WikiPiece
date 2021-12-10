@@ -21,7 +21,6 @@ namespace WikiPiece.Models
         [StringLength(300, ErrorMessage = "Maximo de 300")]
         [Required]
         public string ImagemUrl { get; set; }
-        public ICollection<Personagem> Personagens { get; set; }
 
     }
 }
