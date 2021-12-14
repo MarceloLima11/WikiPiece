@@ -1,4 +1,5 @@
 using AutoMapper;
+using WikiPiece.Data.DTOs.LowDtos;
 using WikiPiece.Models;
 
 namespace WikiPiece.Data.DTOs.Mappings
@@ -11,6 +12,11 @@ namespace WikiPiece.Data.DTOs.Mappings
             CreateMap<Personagem, PersonagemDTO>().ReverseMap();
             CreateMap<Arco, ArcoDTO>().ReverseMap();
             CreateMap<Ilha, IlhaDTO>().ReverseMap();
+            
+
+            //Low mappings
+            CreateMap<Personagem, PersonagemLowDTO>().ReverseMap();
+            //CreateMap<AkumaNoMi, AkumaNoMiLowDTO>().ReverseMap();
         }
     }
 }

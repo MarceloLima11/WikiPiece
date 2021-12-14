@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WikiPiece.Data;
 
 namespace WikiPiece.Migrations
 {
     [DbContext(typeof(WikiPieceContext))]
-    partial class WikiPieceContextModelSnapshot : ModelSnapshot
+    [Migration("20211210134704_ArcoIdColumn")]
+    partial class ArcoIdColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -21,7 +21,7 @@ namespace WikiPiece.Repository
             _context.SaveChanges();
         }
 
-        public IEnumerable<T> Get()
+        public IQueryable<T> Get()
         {
             return _context.Set<T>().AsNoTracking();
         }
