@@ -15,9 +15,9 @@ namespace WikiPiece.Controllers
     public class ArcoController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IArcoRepository _context;
+        private readonly IUnitOfWork _context;
 
-        public ArcoController(IArcoRepository context, IMapper mapper)
+        public ArcoController(IUnitOfWork context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -26,7 +26,7 @@ namespace WikiPiece.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<ArcoDTO>> GetAll()
         {
-            var listArcos = _context.Get().ToList();
+            var listArcos = _context.ArcoRepository.Get();
 
             var arcosDto = _mapper.Map<List<ArcoDTO>>(listArcos);
 
@@ -36,7 +36,7 @@ namespace WikiPiece.Controllers
         [HttpGet("ArcoPersonagens")]
         public ActionResult<IEnumerable<ArcoDTO>> GetArcoPersonagens()
         {
-            var arcoPersonagens = _context.GetArcoPersonagens();
+            var arcoPersonagens = _context.ArcoRepository.GetArcoPersonagens();
 
             var personagensDto = _mapper.Map<List<ArcoDTO>>(arcoPersonagens);
             return personagensDto;
@@ -45,7 +45,7 @@ namespace WikiPiece.Controllers
         [HttpGet("Id/{id}")]
         public ActionResult<IEnumerable<ArcoDTO>> GetById([FromRoute] int id)
         {
-            var arco = _context.GetById(x => x.Id == id);
+            var arco = _context.ArcoRepository.GetById(x => x.Id == id);
 
             if(arco == null)
             return NotFound();
@@ -59,7 +59,7 @@ namespace WikiPiece.Controllers
         [HttpGet("Nome/{nome}")]
         public ActionResult<IEnumerable<ArcoDTO>> GetByNome([FromRoute] string nome)
         {
-            var arco = _context.GetByNome(x => x.Nome == nome);
+            var arco = _context.ArcoRepository.GetByNome(x => x.Nome == nome);
 
             if(arco == null)
             return NotFound();
@@ -72,7 +72,10 @@ namespace WikiPiece.Controllers
         public ActionResult<ArcoDTO> Post([FromBody] ArcoDTO newArcoDto)
         {
             var arco = _mapper.Map<Arco>(newArcoDto);
-            _context.Add(arco);
+
+            _context.ArcoRepository.Add(arco);
+
+            _context.CommitAsync();
 
             return newArcoDto;
         }
@@ -85,7 +88,9 @@ namespace WikiPiece.Controllers
 
             var arco = _mapper.Map<Arco>(newArco);
 
-            _context.Update(arco);
+            _context.ArcoRepository.Update(arco);
+
+            _context.CommitAsync();
 
             return Ok();
         }

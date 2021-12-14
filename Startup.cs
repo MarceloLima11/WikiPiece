@@ -36,10 +36,7 @@ namespace WikiPiece
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddScoped<IArcoRepository, ArcoRepository>();
-            services.AddScoped<IIlhaRepository, IlhaRepository>();
-            services.AddScoped<IPersonagemRepository, PersonagemRepository>();
-            services.AddScoped<IAkumaNoMiRepository, AkumaNoMiRepository>();  
+            services.AddScoped<IUnitOfWork, UnitOfWork>();  
 
             var mySqlConnectionStr = Configuration.GetConnectionString("WikiConnection");
             services.AddDbContext<WikiPieceContext>(x =>{

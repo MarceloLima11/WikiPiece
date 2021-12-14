@@ -10,5 +10,7 @@ namespace WikiPiece.Repository.Interfaces
         IEnumerable<Ilha> GetByRegiao(Expression<Func<Ilha, bool>> predicate);
 
         IEnumerable<Ilha> GetByClima(Expression<Func<Ilha, bool>> predicate);
+
+        Ilha GetById(Expression<Func<Ilha, bool>> predicate);
     }
 }

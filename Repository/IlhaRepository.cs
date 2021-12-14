@@ -22,6 +22,11 @@ namespace WikiPiece.Repository
             return _context.Ilhas.Where(predicate);
         }
 
+        public Ilha GetById(Expression<Func<Ilha, bool>> predicate)
+        {
+            return _context.Ilhas.FirstOrDefault(predicate);
+        }
+
         public IEnumerable<Ilha> GetByRegiao(Expression<Func<Ilha, bool>> predicate)
         {
             return _context.Ilhas.Where(predicate);

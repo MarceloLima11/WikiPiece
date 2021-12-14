@@ -14,26 +14,29 @@ namespace WikiPiece.Controllers
     [Route("v1/[Controller]")]
     public class PersonagemController : ControllerBase
     {
-        private readonly IPersonagemRepository _context;
+        private readonly IUnitOfWork _context;
         private readonly IMapper _mapper;
 
-        public PersonagemController(IPersonagemRepository context, IMapper mapper)
+        public PersonagemController(IUnitOfWork context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Personagem>> GetAll()
+        public ActionResult<IEnumerable<PersonagemDTO>> GetAll()
         {
-            var listPersonagens = _context.Get().ToList();
-            return listPersonagens;
+            var listPersonagens = _context.PersonagemRepository.Get();
+
+            var listPersonagensDto = _mapper.Map<List<PersonagemDTO>>(listPersonagens);
+
+            return listPersonagensDto;
         }
 
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<PersonagemDTO>> GetById([FromRoute] int id)
         {
-            var personagem = _context.GetById(x => x.Id == id);
+            var personagem = _context.PersonagemRepository.GetById(x => x.Id == id);
 
             var personagemDto = _mapper.Map<List<PersonagemDTO>>(personagem);
 
@@ -43,7 +46,7 @@ namespace WikiPiece.Controllers
         [HttpGet("Nome/{nome}")]
         public ActionResult<IEnumerable<PersonagemDTO>> GetByNome([FromRoute] string nome)
         {
-            var personagem = _context.GetByNome(x => x.Nome == nome);
+            var personagem = _context.PersonagemRepository.GetByNome(x => x.Nome == nome);
 
             var personagemDto = _mapper.Map<List<PersonagemDTO>>(personagem);
 
@@ -53,7 +56,7 @@ namespace WikiPiece.Controllers
         [HttpGet("PersonagensAkumas")]
         public ActionResult<IEnumerable<PersonagemDTO>> GetPersonagensAkumas()
         {
-            var personagemAkumas = _context.GetPersonagensAkumas();
+            var personagemAkumas = _context.PersonagemRepository.GetPersonagensAkumas();
 
             var personagensAkumasDto = _mapper.Map<List<PersonagemDTO>>(personagemAkumas);
 
@@ -61,18 +64,23 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("Top5")]
-        public ActionResult<IEnumerable<Personagem>> GetTop5()
+        public ActionResult<IEnumerable<PersonagemDTO>> GetTop5()
         {
-           var top5 = _context.GetTop5(x => x.Top5 == true).ToList();;
+           var top5 = _context.PersonagemRepository.GetTop5(x => x.Top5 == true);
 
-           return top5;
+           var personagensAkumasDto = _mapper.Map<List<PersonagemDTO>>(top5);
+
+           return personagensAkumasDto;
         }
 
         [HttpPost]
-        public ActionResult<Personagem> Post([FromBody] Personagem personagem)
+        public ActionResult<PersonagemDTO> Post([FromBody] Personagem personagemDto)
         {
-            _context.Add(personagem);
-            return personagem;
+            _context.PersonagemRepository.Add(personagemDto);
+
+            var personagensAkumasDto = _mapper.Map<PersonagemDTO>(personagemDto);
+
+            return personagensAkumasDto;
         }
 
         [HttpPut("{id}")]
@@ -81,7 +89,12 @@ namespace WikiPiece.Controllers
             if(id != personagem.Id)
             return BadRequest("Ids diferentes.");
 
-            _context.Update(personagem);
+            var personagemDto = _mapper.Map<List<PersonagemDTO>>(personagem);
+
+            _context.PersonagemRepository.Update(personagem);
+
+            _context.CommitAsync();
+
             return NoContent();
         }
     }
