@@ -19,12 +19,22 @@ namespace WikiPiece.Repository
 
         public IEnumerable<AkumaNoMi> GetAkumasPersonagens()
         {
-            return _context.AkumaNoMis.Include(x => x.Personagens);
+            return _context.AkumaNoMis.Include(x => x.Personagens).ToList();
+        }
+
+        public IEnumerable<AkumaNoMi> GetById(Expression<Func<AkumaNoMi, bool>> predicate)
+        {
+            return _context.AkumaNoMis.Where(predicate).Include(x => x.Personagens);
+        }
+
+        public IEnumerable<AkumaNoMi> GetByNome(Expression<Func<AkumaNoMi, bool>> predicate)
+        {
+            return _context.AkumaNoMis.Where(predicate).Include(x => x.Personagens).ToList();
         }
 
         public IEnumerable<AkumaNoMi> GetByTipo(Expression<Func<AkumaNoMi, bool>> predicate)
         {
-            return _context.AkumaNoMis.Where(predicate);
+            return _context.AkumaNoMis.Where(predicate).Include(x => x.Personagens).ToList();
         }
     }
 }

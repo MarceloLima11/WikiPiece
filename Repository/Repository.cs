@@ -26,16 +26,6 @@ namespace WikiPiece.Repository
             return _context.Set<T>().AsNoTracking();
         }
 
-        public T GetById(Expression<Func<T, bool>> predicate)
-        {
-            return _context.Set<T>().AsNoTracking().SingleOrDefault(predicate);
-        }
-
-        public T GetByNome(Expression<Func<T, bool>> predicate)
-        {
-            return _context.Set<T>().AsNoTracking().FirstOrDefault(predicate);
-        }
-
         public void Update(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;

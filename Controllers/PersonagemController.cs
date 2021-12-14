@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WikiPiece.Data;
+using WikiPiece.Data.DTOs;
 using WikiPiece.Models;
 using WikiPiece.Repository.Interfaces;
 
@@ -13,10 +15,12 @@ namespace WikiPiece.Controllers
     public class PersonagemController : ControllerBase
     {
         private readonly IPersonagemRepository _context;
+        private readonly IMapper _mapper;
 
-        public PersonagemController(IPersonagemRepository context)
+        public PersonagemController(IPersonagemRepository context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -27,17 +31,33 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Personagem> GetById([FromRoute] int id)
+        public ActionResult<IEnumerable<PersonagemDTO>> GetById([FromRoute] int id)
         {
             var personagem = _context.GetById(x => x.Id == id);
-            return personagem;
+
+            var personagemDto = _mapper.Map<List<PersonagemDTO>>(personagem);
+
+            return personagemDto;
         }
 
-        [HttpGet("Nome/{Nome}")]
-        public ActionResult<Personagem> GetByNome([FromRoute] string nome)
+        [HttpGet("Nome/{nome}")]
+        public ActionResult<IEnumerable<PersonagemDTO>> GetByNome([FromRoute] string nome)
         {
             var personagem = _context.GetByNome(x => x.Nome == nome);
-            return personagem;
+
+            var personagemDto = _mapper.Map<List<PersonagemDTO>>(personagem);
+
+            return personagemDto;
+        }
+
+        [HttpGet("PersonagensAkumas")]
+        public ActionResult<IEnumerable<PersonagemDTO>> GetPersonagensAkumas()
+        {
+            var personagemAkumas = _context.GetPersonagensAkumas();
+
+            var personagensAkumasDto = _mapper.Map<List<PersonagemDTO>>(personagemAkumas);
+
+            return personagensAkumasDto;
         }
 
         [HttpGet("Top5")]

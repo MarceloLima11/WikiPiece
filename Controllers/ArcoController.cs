@@ -45,7 +45,7 @@ namespace WikiPiece.Controllers
         [HttpGet("Id/{id}")]
         public ActionResult<IEnumerable<ArcoDTO>> GetById([FromRoute] int id)
         {
-            var arco = _context.GetByInclude(x => x.Id == id);
+            var arco = _context.GetById(x => x.Id == id);
 
             if(arco == null)
             return NotFound();
@@ -59,7 +59,7 @@ namespace WikiPiece.Controllers
         [HttpGet("Nome/{nome}")]
         public ActionResult<IEnumerable<ArcoDTO>> GetByNome([FromRoute] string nome)
         {
-            var arco = _context.GetByInclude(x => x.Nome == nome);
+            var arco = _context.GetByNome(x => x.Nome == nome);
 
             if(arco == null)
             return NotFound();

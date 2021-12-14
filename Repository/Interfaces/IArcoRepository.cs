@@ -10,6 +10,7 @@ namespace WikiPiece.Repository.Interfaces
     public interface IArcoRepository : IRepository<Arco>
     {
         IEnumerable<Arco> GetArcoPersonagens();
-        IEnumerable<Arco> GetByInclude(Expression<Func<Arco, bool>> predicate);
+        IEnumerable<Arco> GetById(Expression<Func<Arco, bool>> predicate);
+        IEnumerable<Arco> GetByNome(Expression<Func<Arco, bool>> predicate);
     }
 }

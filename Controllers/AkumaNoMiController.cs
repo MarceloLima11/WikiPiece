@@ -1,9 +1,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WikiPiece.Data;
+using WikiPiece.Data.DTOs;
 using WikiPiece.Models;
 using WikiPiece.Repository.Interfaces;
 
@@ -14,10 +16,12 @@ namespace WikiPiece.Controllers
     public class AkumaNoMiController : ControllerBase
     {
         private readonly IAkumaNoMiRepository _context;
+        private readonly IMapper _mapper;
 
-        public AkumaNoMiController(IAkumaNoMiRepository context)
+        public AkumaNoMiController(IAkumaNoMiRepository context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper; 
         }
 
         [HttpGet]
@@ -28,31 +32,43 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("Nome/{nome}")]
-        public ActionResult<AkumaNoMi> GetByNome([FromRoute] string nome)
+        public ActionResult<IEnumerable<AkumaNoMiDTO>> GetByNome([FromRoute] string nome)
         {
             var akuma = _context.GetByNome(x => x.Nome == nome);
-            return akuma;
+
+            var akumaDto = _mapper.Map<List<AkumaNoMiDTO>>(akuma);
+
+            return akumaDto;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<AkumaNoMi> GetById([FromRoute] int id)
+        public ActionResult<IEnumerable<AkumaNoMiDTO>> GetById([FromRoute] int id)
         {
             var akuma = _context.GetById(x => x.Id == id);
-            return akuma;
+
+            var akumaDto = _mapper.Map<List<AkumaNoMiDTO>>(akuma);
+
+            return akumaDto;
         }
 
         [HttpGet("Tipo/{tipo}")]
-        public ActionResult<IEnumerable<AkumaNoMi>> GetByTipo([FromRoute] string tipo)
+        public ActionResult<IEnumerable<AkumaNoMiDTO>> GetByTipo([FromRoute] string tipo)
         {
-            var akumas = _context.GetByTipo(x => x.Tipo == tipo).ToList();
-            return akumas;
+            var akumas = _context.GetByTipo(x => x.Tipo == tipo);
+
+            var akumasDtos = _mapper.Map<List<AkumaNoMiDTO>>(akumas);
+
+            return akumasDtos;
         }
 
         [HttpGet("Personagens")]
-        public ActionResult<IEnumerable<AkumaNoMi>> GetAkumasPersonagens()
+        public ActionResult<IEnumerable<AkumaNoMiDTO>> GetAkumasPersonagens()
         {
-            var akumasPersonagens = _context.GetAkumasPersonagens().ToList();
-            return akumasPersonagens;
+            var akumasPersonagens = _context.GetAkumasPersonagens();
+
+            var akumasPersonagensDto = _mapper.Map<List<AkumaNoMiDTO>>(akumasPersonagens);
+
+            return akumasPersonagensDto;
         }
 
         [HttpPost]

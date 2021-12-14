@@ -29,8 +29,8 @@ namespace WikiPiece.Controllers
         [HttpGet("{id}")]
         public ActionResult<Ilha> GetById([FromRoute] int id)
         {
-            var ilha = _context.GetById(x => x.Id == id);
-            return ilha;
+            //var ilha = _context.GetById(x => x.Id == id);
+            return Ok();
         }
 
         [HttpGet("Regiao/{regiao}")]

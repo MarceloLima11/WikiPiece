@@ -23,9 +23,14 @@ namespace WikiPiece.Repository
             return _context.Arcos.Include(x => x.Personagens).ToList();
         }
 
-        public IEnumerable<Arco> GetByInclude(Expression<Func<Arco, bool>> predicate)
+        public IEnumerable<Arco> GetById(Expression<Func<Arco, bool>> predicate)
         {
-            return _context.Arcos.Where(predicate).Include(x => x.Personagens).ToList();
+            return _context.Arcos.Where(predicate).Include(x => x.Personagens);
+        }
+
+        public IEnumerable<Arco> GetByNome(Expression<Func<Arco, bool>> predicate)
+        {
+            return _context.Arcos.Where(predicate).Include(x => x.Personagens);
         }
     }
 }

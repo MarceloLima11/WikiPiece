@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using WikiPiece.Data.DTOs.LowDtos;
 
 namespace WikiPiece.Data.DTOs
 {
@@ -10,6 +11,6 @@ namespace WikiPiece.Data.DTOs
         public string PrimeiraAparicao { get; set; }
         public string ImagemUrl { get; set; }
         public string Descricao { get; set; }
-        public ICollection<PersonagemDTO> Personagens { get; set; }  
+        public ICollection<PersonagemLowDTO> Personagens { get; set; }  
     }
 }

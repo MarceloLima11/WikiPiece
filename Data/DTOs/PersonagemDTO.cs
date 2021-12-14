@@ -1,3 +1,4 @@
+using WikiPiece.Data.DTOs.LowDtos;
 using WikiPiece.Models;
 
 namespace WikiPiece.Data.DTOs
@@ -15,5 +16,6 @@ namespace WikiPiece.Data.DTOs
         public string Descricao { get; set; }
         public string ImagemUrl { get; set;}
         public int AkumaNoMiId { get; set;}
+        public AkumaNoMiLowDTO AkumaNoMi { get; set; }
     }
 }

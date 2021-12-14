@@ -16,7 +16,7 @@ namespace WikiPiece.Data.DTOs.Mappings
 
             //Low mappings
             CreateMap<Personagem, PersonagemLowDTO>().ReverseMap();
-            //CreateMap<AkumaNoMi, AkumaNoMiLowDTO>().ReverseMap();
+            CreateMap<AkumaNoMi, AkumaNoMiLowDTO>().ReverseMap();
         }
     }
 }
