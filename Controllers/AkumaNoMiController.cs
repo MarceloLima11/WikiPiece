@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,16 +26,16 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<AkumaNoMi>> GetAll()
+        public async Task<ActionResult<IEnumerable<AkumaNoMi>>> GetAll()
         {
-            var listAkumas = _context.AkumaNoMiRepository.Get().ToList();
+            var listAkumas = await _context.AkumaNoMiRepository.Get().ToListAsync();
             return listAkumas;
         }
 
         [HttpGet("Nome/{nome}")]
-        public ActionResult<IEnumerable<AkumaNoMiDTO>> GetByNome([FromRoute] string nome)
+        public async Task<ActionResult<IEnumerable<AkumaNoMiDTO>>> GetByNome([FromRoute] string nome)
         {
-            var akuma = _context.AkumaNoMiRepository.GetByNome(x => x.Nome == nome);
+            var akuma = await _context.AkumaNoMiRepository.GetByNome(x => x.Nome == nome);
 
             var akumaDto = _mapper.Map<List<AkumaNoMiDTO>>(akuma);
 
@@ -42,19 +43,19 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<AkumaNoMiDTO>> GetById([FromRoute] int id)
+        public async Task<ActionResult<IEnumerable<AkumaNoMiDTO>>> GetById([FromRoute] int id)
         {
-            var akuma = _context.AkumaNoMiRepository.GetById(x => x.Id == id);
+            var akumas = await _context.AkumaNoMiRepository.GetById(x => x.Id == id);
 
-            var akumaDto = _mapper.Map<List<AkumaNoMiDTO>>(akuma);
+            var akumaDto = _mapper.Map<List<AkumaNoMiDTO>>(akumas);
 
             return akumaDto;
         }
 
         [HttpGet("Tipo/{tipo}")]
-        public ActionResult<IEnumerable<AkumaNoMiDTO>> GetByTipo([FromRoute] string tipo)
+        public async Task<ActionResult<IEnumerable<AkumaNoMiDTO>>> GetByTipo([FromRoute] string tipo)
         {
-            var akumas = _context.AkumaNoMiRepository.GetByTipo(x => x.Tipo == tipo);
+            var akumas = await _context.AkumaNoMiRepository.GetByTipo(x => x.Tipo == tipo);
 
             var akumasDtos = _mapper.Map<List<AkumaNoMiDTO>>(akumas);
 
@@ -62,9 +63,9 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("Personagens")]
-        public ActionResult<IEnumerable<AkumaNoMiDTO>> GetAkumasPersonagens()
+        public async Task<ActionResult<IEnumerable<AkumaNoMiDTO>>> GetAkumasPersonagens()
         {
-            var akumasPersonagens = _context.AkumaNoMiRepository.GetAkumasPersonagens();
+            var akumasPersonagens = await _context.AkumaNoMiRepository.GetAkumasPersonagens();
 
             var akumasPersonagensDto = _mapper.Map<List<AkumaNoMiDTO>>(akumasPersonagens);
 
@@ -72,24 +73,24 @@ namespace WikiPiece.Controllers
         }
 
         [HttpPost]
-        public ActionResult<AkumaNoMi> Post([FromBody] AkumaNoMi newAkumaNoMi)
+        public async Task<ActionResult<AkumaNoMi>> Post([FromBody] AkumaNoMi newAkumaNoMi)
         {
             _context.AkumaNoMiRepository.Add(newAkumaNoMi);
 
-            _context.CommitAsync();
+            await _context.CommitAsync();
             
             return newAkumaNoMi;
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromRoute] int id, [FromBody] AkumaNoMi akumaNoMi)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] AkumaNoMi akumaNoMi)
         {
             if(id != akumaNoMi.Id)
             return BadRequest();
             
             _context.AkumaNoMiRepository.Update(akumaNoMi);
             
-            _context.CommitAsync();
+            await _context.CommitAsync();
             
             return NoContent();
         }

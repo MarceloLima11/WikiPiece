@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WikiPiece.Data;
 using WikiPiece.Models;
@@ -17,24 +18,24 @@ namespace WikiPiece.Repository
             _context = context;
         }
 
-        public IEnumerable<Personagem> GetById(Expression<Func<Personagem, bool>> predicate)
+        public async Task<IEnumerable<Personagem>> GetById(Expression<Func<Personagem, bool>> predicate)
         {
-            return _context.Personagens.Where(predicate).Include(x => x.AkumaNoMi);
+            return await _context.Personagens.Where(predicate).Include(x => x.AkumaNoMi).ToListAsync();
         }
 
-        public IEnumerable<Personagem> GetByNome(Expression<Func<Personagem, bool>> predicate)
+        public async Task<IEnumerable<Personagem>> GetByNome(Expression<Func<Personagem, bool>> predicate)
         {
-            return _context.Personagens.Where(predicate).Include(x => x.AkumaNoMi);
+            return await _context.Personagens.Where(predicate).Include(x => x.AkumaNoMi).ToListAsync();
         }
 
-        public IEnumerable<Personagem> GetPersonagensAkumas()
+        public async Task<IEnumerable<Personagem>> GetPersonagensAkumas()
         {
-            return _context.Personagens.Include(x => x.AkumaNoMi);
+            return await _context.Personagens.Include(x => x.AkumaNoMi).ToListAsync();
         }
 
-        public IEnumerable<Personagem> GetTop5(Expression<Func<Personagem, bool>> predicate)
+        public async Task<IEnumerable<Personagem>> GetTop5(Expression<Func<Personagem, bool>> predicate)
         {
-            return _context.Personagens.Where(predicate);
+            return await _context.Personagens.Where(predicate).ToListAsync();
         }
     }
 }

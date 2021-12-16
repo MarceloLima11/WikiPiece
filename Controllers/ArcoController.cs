@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,9 +25,9 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ArcoDTO>> GetAll()
+        public async Task<ActionResult<IEnumerable<ArcoDTO>>> GetAll()
         {
-            var listArcos = _context.ArcoRepository.Get();
+            var listArcos = await _context.ArcoRepository.Get().ToListAsync();
 
             var arcosDto = _mapper.Map<List<ArcoDTO>>(listArcos);
 
@@ -34,18 +35,18 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("ArcoPersonagens")]
-        public ActionResult<IEnumerable<ArcoDTO>> GetArcoPersonagens()
+        public async Task<ActionResult<IEnumerable<ArcoDTO>>> GetArcoPersonagens()
         {
-            var arcoPersonagens = _context.ArcoRepository.GetArcoPersonagens();
+            var arcoPersonagens = await _context.ArcoRepository.GetArcoPersonagens();
 
             var personagensDto = _mapper.Map<List<ArcoDTO>>(arcoPersonagens);
             return personagensDto;
         }
         
         [HttpGet("Id/{id}")]
-        public ActionResult<IEnumerable<ArcoDTO>> GetById([FromRoute] int id)
+        public async Task<ActionResult<IEnumerable<ArcoDTO>>> GetById([FromRoute] int id)
         {
-            var arco = _context.ArcoRepository.GetById(x => x.Id == id);
+            var arco = await _context.ArcoRepository.GetById(x => x.Id == id);
 
             if(arco == null)
             return NotFound();
@@ -57,9 +58,9 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("Nome/{nome}")]
-        public ActionResult<IEnumerable<ArcoDTO>> GetByNome([FromRoute] string nome)
+        public async Task<ActionResult<IEnumerable<ArcoDTO>>> GetByNome([FromRoute] string nome)
         {
-            var arco = _context.ArcoRepository.GetByNome(x => x.Nome == nome);
+            var arco = await _context.ArcoRepository.GetByNome(x => x.Nome == nome);
 
             if(arco == null)
             return NotFound();
@@ -69,19 +70,19 @@ namespace WikiPiece.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ArcoDTO> Post([FromBody] ArcoDTO newArcoDto)
+        public async Task<ActionResult<ArcoDTO>> Post([FromBody] ArcoDTO newArcoDto)
         {
             var arco = _mapper.Map<Arco>(newArcoDto);
 
             _context.ArcoRepository.Add(arco);
 
-            _context.CommitAsync();
+            await _context.CommitAsync();
 
             return newArcoDto;
         }
         
         [HttpPut("{id}")]
-        public ActionResult Put([FromRoute] int id, [FromBody] ArcoDTO newArco)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] ArcoDTO newArco)
         {
             if(id != newArco.Id)
             return BadRequest("Ids de rota e body distintos!");
@@ -90,7 +91,7 @@ namespace WikiPiece.Controllers
 
             _context.ArcoRepository.Update(arco);
 
-            _context.CommitAsync();
+            await _context.CommitAsync();
 
             return Ok();
         }

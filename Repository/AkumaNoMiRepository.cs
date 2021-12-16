@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WikiPiece.Data;
 using WikiPiece.Models;
@@ -17,24 +18,24 @@ namespace WikiPiece.Repository
             _context = context;
         }
 
-        public IEnumerable<AkumaNoMi> GetAkumasPersonagens()
+        public async Task<IEnumerable<AkumaNoMi>> GetAkumasPersonagens()
         {
-            return _context.AkumaNoMis.Include(x => x.Personagens).ToList();
+            return await _context.AkumaNoMis.Include(x => x.Personagens).ToListAsync();
         }
 
-        public IEnumerable<AkumaNoMi> GetById(Expression<Func<AkumaNoMi, bool>> predicate)
+        public async Task<IEnumerable<AkumaNoMi>> GetById(Expression<Func<AkumaNoMi, bool>> predicate)
         {
-            return _context.AkumaNoMis.Where(predicate).Include(x => x.Personagens);
+            return await _context.AkumaNoMis.Where(predicate).Include(x => x.Personagens).ToListAsync();
         }
 
-        public IEnumerable<AkumaNoMi> GetByNome(Expression<Func<AkumaNoMi, bool>> predicate)
+        public async Task<IEnumerable<AkumaNoMi>> GetByNome(Expression<Func<AkumaNoMi, bool>> predicate)
         {
-            return _context.AkumaNoMis.Where(predicate).Include(x => x.Personagens).ToList();
+            return await _context.AkumaNoMis.Where(predicate).Include(x => x.Personagens).ToListAsync();
         }
 
-        public IEnumerable<AkumaNoMi> GetByTipo(Expression<Func<AkumaNoMi, bool>> predicate)
+        public async Task<IEnumerable<AkumaNoMi>> GetByTipo(Expression<Func<AkumaNoMi, bool>> predicate)
         {
-            return _context.AkumaNoMis.Where(predicate).Include(x => x.Personagens).ToList();
+            return await _context.AkumaNoMis.Where(predicate).Include(x => x.Personagens).ToListAsync();
         }
     }
 }

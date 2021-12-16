@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,9 +25,9 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<PersonagemDTO>> GetAll()
+        public async Task<ActionResult<IEnumerable<PersonagemDTO>>> GetAll()
         {
-            var listPersonagens = _context.PersonagemRepository.Get();
+            var listPersonagens = await _context.PersonagemRepository.Get().ToListAsync();
 
             var listPersonagensDto = _mapper.Map<List<PersonagemDTO>>(listPersonagens);
 
@@ -34,9 +35,9 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<PersonagemDTO>> GetById([FromRoute] int id)
+        public async Task<ActionResult<IEnumerable<PersonagemDTO>>> GetById([FromRoute] int id)
         {
-            var personagem = _context.PersonagemRepository.GetById(x => x.Id == id);
+            var personagem = await _context.PersonagemRepository.GetById(x => x.Id == id);
 
             var personagemDto = _mapper.Map<List<PersonagemDTO>>(personagem);
 
@@ -44,9 +45,9 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("Nome/{nome}")]
-        public ActionResult<IEnumerable<PersonagemDTO>> GetByNome([FromRoute] string nome)
+        public async Task<ActionResult<IEnumerable<PersonagemDTO>>> GetByNome([FromRoute] string nome)
         {
-            var personagem = _context.PersonagemRepository.GetByNome(x => x.Nome == nome);
+            var personagem = await _context.PersonagemRepository.GetByNome(x => x.Nome == nome);
 
             var personagemDto = _mapper.Map<List<PersonagemDTO>>(personagem);
 
@@ -54,9 +55,9 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("PersonagensAkumas")]
-        public ActionResult<IEnumerable<PersonagemDTO>> GetPersonagensAkumas()
+        public async Task<ActionResult<IEnumerable<PersonagemDTO>>> GetPersonagensAkumas()
         {
-            var personagemAkumas = _context.PersonagemRepository.GetPersonagensAkumas();
+            var personagemAkumas = await _context.PersonagemRepository.GetPersonagensAkumas();
 
             var personagensAkumasDto = _mapper.Map<List<PersonagemDTO>>(personagemAkumas);
 
@@ -64,9 +65,9 @@ namespace WikiPiece.Controllers
         }
 
         [HttpGet("Top5")]
-        public ActionResult<IEnumerable<PersonagemDTO>> GetTop5()
+        public async Task<ActionResult<IEnumerable<PersonagemDTO>>> GetTop5()
         {
-           var top5 = _context.PersonagemRepository.GetTop5(x => x.Top5 == true);
+           var top5 = await _context.PersonagemRepository.GetTop5(x => x.Top5 == true);
 
            var personagensAkumasDto = _mapper.Map<List<PersonagemDTO>>(top5);
 
@@ -74,26 +75,28 @@ namespace WikiPiece.Controllers
         }
 
         [HttpPost]
-        public ActionResult<PersonagemDTO> Post([FromBody] Personagem personagemDto)
+        public async Task<ActionResult<PersonagemDTO>> Post([FromBody] PersonagemDTO personagemDto)
         {
-            _context.PersonagemRepository.Add(personagemDto);
+            var personagem = _mapper.Map<Personagem>(personagemDto);
 
-            var personagensAkumasDto = _mapper.Map<PersonagemDTO>(personagemDto);
+            _context.PersonagemRepository.Add(personagem);
 
-            return personagensAkumasDto;
+            await _context.CommitAsync();
+
+            return personagemDto;
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromRoute] int id, [FromBody] Personagem personagem)
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] PersonagemDTO personagemDto)
         {
-            if(id != personagem.Id)
+            if(id != personagemDto.Id)
             return BadRequest("Ids diferentes.");
 
-            var personagemDto = _mapper.Map<List<PersonagemDTO>>(personagem);
+            var personagem = _mapper.Map<Personagem>(personagemDto);
 
             _context.PersonagemRepository.Update(personagem);
 
-            _context.CommitAsync();
+            await _context.CommitAsync();
 
             return NoContent();
         }

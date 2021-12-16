@@ -5,6 +5,7 @@ namespace WikiPiece.Data.DTOs
 {
     public class PersonagemDTO
     {
+        public int Id { get; set; }
         public string Nome { get; set; }
         public int Idade { get; set; }
         public string Linhagem { get; set;}

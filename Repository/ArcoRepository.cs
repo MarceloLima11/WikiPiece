@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WikiPiece.Data;
 using WikiPiece.Data.DTOs;
@@ -18,19 +19,19 @@ namespace WikiPiece.Repository
             _context = context;
         }
 
-        public IEnumerable<Arco> GetArcoPersonagens()
+        public async Task<IEnumerable<Arco>> GetArcoPersonagens()
         {
-            return _context.Arcos.Include(x => x.Personagens).ToList();
+            return await _context.Arcos.Include(x => x.Personagens).ToListAsync();
         }
 
-        public IEnumerable<Arco> GetById(Expression<Func<Arco, bool>> predicate)
+        public async Task<IEnumerable<Arco>> GetById(Expression<Func<Arco, bool>> predicate)
         {
-            return _context.Arcos.Where(predicate).Include(x => x.Personagens);
+            return await _context.Arcos.Where(predicate).Include(x => x.Personagens).ToListAsync();
         }
 
-        public IEnumerable<Arco> GetByNome(Expression<Func<Arco, bool>> predicate)
+        public async Task<IEnumerable<Arco>> GetByNome(Expression<Func<Arco, bool>> predicate)
         {
-            return _context.Arcos.Where(predicate).Include(x => x.Personagens);
+            return await _context.Arcos.Where(predicate).Include(x => x.Personagens).ToListAsync();
         }
     }
 }
